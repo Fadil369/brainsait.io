@@ -13,24 +13,28 @@ The BrainSAIT Identity Platform serves as the unified login gateway for the enti
 ## Features
 
 ### 🔐 **Multi-Factor Authentication**
+
 - **Biometric Authentication** - WebAuthn support for fingerprint/face recognition
 - **QR Code Login** - Mobile app integration for secure authentication
 - **Hospital SSO** - Single sign-on integration with healthcare institutions
 - **Traditional Login** - Email/password with enhanced security
 
 ### 🏥 **Healthcare Integration**
+
 - **UIDL Core** - Universal Identity Digital Layer
 - **Hospital Systems** - Integration with existing EHR/EMR systems
 - **Mobile Apps** - Seamless mobile authentication
 - **API Gateway** - Secure access to all BrainSAIT services
 
 ### 🛡️ **Security Features**
+
 - **HIPAA Compliant** - Healthcare data protection standards
 - **End-to-End Encryption** - Military-grade security
 - **Zero-Knowledge Architecture** - Privacy-first design
 - **Security Headers** - Comprehensive protection against common attacks
 
 ### 🔗 **Platform Integration**
+
 - **Main Platform**: [brainsait.io](https://brainsait.io) - Healthcare ecosystem
 - **Dr. Fadil Profile**: [thefadil.site](https://thefadil.site) - Founder's professional profile
 - **Identity Platform**: [id.brainsait.io](https://id.brainsait.io) - Unified login system
@@ -40,11 +44,13 @@ The BrainSAIT Identity Platform serves as the unified login gateway for the enti
 ### 🚀 **Cloudflare Pages Setup**
 
 1. **Create Cloudflare Pages Project**
+
    ```bash
    npx wrangler pages project create brainsait-identity
    ```
 
 2. **Deploy from Git**
+
    - Connect to GitHub repository
    - Set build settings:
      - Framework preset: `None`
@@ -81,17 +87,20 @@ AAAA id 2001:db8::1
 The identity platform is designed to work seamlessly with the existing Dr. Fadil professional profile:
 
 ### 🔗 **Cross-Platform Navigation**
+
 - Header navigation includes link to Dr. Fadil's profile
 - Profile site includes references to the identity platform
 - Unified branding and design language
 
 ### 👤 **Profile Integration Points**
+
 1. **Authentication Context** - Users can learn about the founder
-2. **Trust Building** - Professional credentials enhance platform credibility  
+2. **Trust Building** - Professional credentials enhance platform credibility
 3. **Contact Integration** - Direct links to consultation booking
 4. **Brand Cohesion** - Consistent visual identity across platforms
 
 ### 📱 **User Flow**
+
 ```
 thefadil.site (Learn about founder)
     ↓
@@ -103,6 +112,7 @@ brainsait.io (Healthcare dashboard)
 ## Security Configuration
 
 ### 🛡️ **Security Headers**
+
 ```
 X-Frame-Options: DENY
 X-Content-Type-Options: nosniff
@@ -112,6 +122,7 @@ Content-Security-Policy: [Comprehensive policy]
 ```
 
 ### 🔐 **Authentication Methods**
+
 - **WebAuthn API** for biometric authentication
 - **TOTP** for two-factor authentication
 - **OAuth 2.0** for third-party integrations
@@ -120,6 +131,7 @@ Content-Security-Policy: [Comprehensive policy]
 ## Development
 
 ### 🚧 **Local Development**
+
 ```bash
 # Serve locally
 python -m http.server 8000
@@ -131,6 +143,7 @@ npx wrangler pages dev
 ```
 
 ### 🧪 **Testing**
+
 ```bash
 # Test authentication flows
 npm test
@@ -159,6 +172,7 @@ identity-platform/
 ## API Integration
 
 ### 🔌 **Authentication Endpoints**
+
 ```javascript
 // Login
 POST /api/auth/login
@@ -181,12 +195,14 @@ GET /api/auth/sso/hospital
 ## Monitoring & Analytics
 
 ### 📊 **Key Metrics**
+
 - Login success/failure rates
 - Authentication method usage
 - Security incident tracking
 - Performance monitoring
 
 ### 🔍 **Logging**
+
 - Authentication attempts
 - Security events
 - Performance metrics
@@ -195,12 +211,14 @@ GET /api/auth/sso/hospital
 ## Support & Documentation
 
 ### 📚 **Resources**
+
 - **Main Documentation**: Available at brainsait.io/docs
 - **API Reference**: Available at brainsait.io/api
 - **Security Guide**: Available at brainsait.io/security
 - **Integration Guide**: Available at brainsait.io/integration
 
 ### 💬 **Support Channels**
+
 - **Email**: support@brainsait.io
 - **Documentation**: brainsait.io/help
 - **Professional Contact**: [Dr. Fadil's Profile](https://thefadil.site)
