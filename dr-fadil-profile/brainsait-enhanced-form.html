@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainSAIT - نموذج الطلب المسبق | Pre-Order Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-blue: #0066CC;
+            --brand-green: #00AA44;
+            --brand-gray: #F8F9FA;
+            --brand-dark: #1a202c;
+            --brand-purple: #7C3AED;
+            --brand-orange: #F59E0B;
+        }
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        .font-arabic {
+            font-family: 'Tajawal', Arial, sans-serif;
+        }
+
+        .font-english {
+            font-family: 'Inter', Arial, sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-bg-animated {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .service-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--brand-blue), #0052a3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .service-card.selected {
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0, 102, 204, 0.4);
+        }
+
+        .service-card.selected::before {
+            opacity: 1;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--brand-blue), var(--brand-green));
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .feature-checkbox {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .feature-checkbox input:checked + .feature-label {
+            background-color: var(--brand-blue);
+            color: white;
+            border-color: var(--brand-blue);
+            transform: scale(1.02);
+        }
+
+        .floating-label {
+            transition: all 0.2s ease-out;
+        }
+
+        .floating-label.active {
+            transform: translateY(-1.5rem) scale(0.875);
+            color: var(--brand-blue);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--brand-blue), #0052a3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--brand-green), #008833);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-success::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-success:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 170, 68, 0.3);
+        }
+
+        .input-field {
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            background: white;
+        }
+
+        .input-field:focus {
+            border-color: var(--brand-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .input-field:hover {
+            border-color: #cbd5e0;
+        }
+
+        .section-divider {
+            background: linear-gradient(90deg, transparent, var(--brand-blue), transparent);
+            height: 2px;
+            margin: 2rem 0;
+            opacity: 0.3;
+        }
+
+        .step-indicator {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: white;
+            border: 3px solid #e2e8f0;
+            color: #a0aec0;
+            font-weight: 600;
+        }
+
+        .step-indicator.active {
+            background: var(--brand-blue);
+            color: white;
+            transform: scale(1.1);
+            border-color: var(--brand-blue);
+            box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        .step-indicator.completed {
+            background: var(--brand-green);
+            color: white;
+            border-color: var(--brand-green);
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--brand-blue);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0%, 20%, 40%, 60%, 80%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Mobile Responsive Improvements */
+        @media (max-width: 768px) {
+            .step-indicator {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 0.875rem;
+            }
+
+            .glass-card {
+                padding: 1.5rem;
+            }
+
+            .service-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-blue);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0052a3;
+        }
+
+        /* Pulse animation for important elements */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 102, 204, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 102, 204, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 102, 204, 0);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-arabic">
+    <!-- Language Toggle -->
+    <div class="fixed top-6 right-6 z-50">
+        <button id="langToggle" class="bg-white text-gray-700 px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 flex items-center space-x-2">
+            <i class="fas fa-globe text-blue-500"></i>
+            <span id="langText" class="font-semibold">English</span>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="gradient-bg-animated text-white py-16 px-4">
+        <div class="container mx-auto text-center">
+            <div class="mb-8">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4 animate-pulse">
+                    <span class="arabic-content">🧠 BrainSAIT</span>
+                    <span class="english-content hidden">🧠 BrainSAIT</span>
+                </h1>
+                <h2 class="text-2xl md:text-3xl font-medium mb-3">
+                    <span class="arabic-content">نموذج الطلب المسبق للمشاريع الرقمية</span>
+                    <span class="english-content hidden">Digital Projects Pre-Order Form</span>
+                </h2>
+                <p class="text-lg md:text-xl opacity-90 max-w-3xl mx-auto leading-relaxed">
+                    <span class="arabic-content">احجز مشروعك الرقمي المخصص مع فريق BrainSAIT المتخصص في الحلول التقنية المبتكرة</span>
+                    <span class="english-content hidden">Reserve your custom digital project with BrainSAIT team specialized in innovative technical solutions</span>
+                </p>
+            </div>
+            
+            <!-- Step Indicators -->
+            <div class="flex justify-center items-center space-x-4 space-x-reverse mt-10 flex-wrap">
+                <div class="step-indicator active" id="stepIndicator1">1</div>
+                <div class="hidden md:block w-8 h-0.5 bg-white opacity-30"></div>
+                <div class="step-indicator" id="stepIndicator2">2</div>
+                <div class="hidden md:block w-8 h-0.5 bg-white opacity-30"></div>
+                <div class="step-indicator" id="stepIndicator3">3</div>
+                <div class="hidden md:block w-8 h-0.5 bg-white opacity-30"></div>
+                <div class="step-indicator" id="stepIndicator4">4</div>
+                <div class="hidden md:block w-8 h-0.5 bg-white opacity-30"></div>
+                <div class="step-indicator" id="stepIndicator5">5</div>
+                <div class="hidden md:block w-8 h-0.5 bg-white opacity-30"></div>
+                <div class="step-indicator" id="stepIndicator6">6</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="sticky top-0 z-40 bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-sm font-semibold text-gray-600">
+                    <span class="arabic-content">الخطوة <span id="currentStep">1</span> من 6</span>
+                    <span class="english-content hidden">Step <span id="currentStepEn">1</span> of 6</span>
+                </span>
+                <span class="text-sm font-semibold text-blue-600">
+                    <span id="progressPercent">17%</span>
+                </span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div id="progressBar" class="progress-bar h-3 rounded-full" style="width: 16.67%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Form Container -->
+    <div class="container mx-auto px-4 py-12">
+        <form id="preOrderForm" class="glass-card rounded-2xl shadow-2xl p-6 md:p-8 lg:p-12 max-w-5xl mx-auto">
+            
+            <!-- Step 1: Basic Information -->
+            <div class="form-step active" id="step1">
+                <div class="text-center mb-12">
+                    <div class="text-6xl mb-4 animate-bounce">👋</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                        <span class="arabic-content">مرحباً بك! لنتعرف عليك</span>
+                        <span class="english-content hidden">Welcome! Let's get to know you</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg">
+                        <span class="arabic-content">ابدأ رحلتك الرقمية معنا بتعبئة معلوماتك الأساسية</span>
+                        <span class="english-content hidden">Start your digital journey with us by filling your basic information</span>
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-user mr-2 text-blue-500"></i>
+                            <span class="arabic-content">الاسم الكامل *</span>
+                            <span class="english-content hidden">Full Name *</span>
+                        </label>
+                        <input type="text" name="fullName" required class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="">
+                        <span class="text-xs text-gray-500 arabic-content">مثال: د. محمد أحمد السعيد</span>
+                        <span class="text-xs text-gray-500 english-content hidden">Example: Dr. Mohammed Ahmed Al-Saeed</span>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-envelope mr-2 text-blue-500"></i>
+                            <span class="arabic-content">البريد الإلكتروني *</span>
+                            <span class="english-content hidden">Email Address *</span>
+                        </label>
+                        <input type="email" name="email" required class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="">
+                        <span class="text-xs text-gray-500 arabic-content">سنستخدمه للتواصل معك</span>
+                        <span class="text-xs text-gray-500 english-content hidden">We'll use this to contact you</span>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-phone mr-2 text-blue-500"></i>
+                            <span class="arabic-content">رقم الهاتف *</span>
+                            <span class="english-content hidden">Phone Number *</span>
+                        </label>
+                        <input type="tel" name="phone" required class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="+966">
+                        <span class="text-xs text-gray-500 arabic-content">يفضل رقم واتساب</span>
+                        <span class="text-xs text-gray-500 english-content hidden">WhatsApp number preferred</span>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-map-marker-alt mr-2 text-blue-500"></i>
+                            <span class="arabic-content">المدينة/البلد</span>
+                            <span class="english-content hidden">City/Country</span>
+                        </label>
+                        <input type="text" name="location" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="">
+                    </div>
+                    
+                    <div class="lg:col-span-2 space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-building mr-2 text-blue-500"></i>
+                            <span class="arabic-content">اسم الشركة/المؤسسة</span>
+                            <span class="english-content hidden">Company/Organization Name</span>
+                        </label>
+                        <input type="text" name="company" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="">
+                        <span class="text-xs text-gray-500 arabic-content">اتركه فارغاً إذا كان المشروع شخصي</span>
+                        <span class="text-xs text-gray-500 english-content hidden">Leave empty if personal project</span>
+                    </div>
+                </div>
+                
+                <!-- Trust Indicators -->
+                <div class="mt-8 pt-8 border-t border-gray-200">
+                    <div class="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-600">
+                        <div class="flex items-center">
+                            <i class="fas fa-lock text-green-500 mr-2"></i>
+                            <span class="arabic-content">معلوماتك آمنة معنا</span>
+                            <span class="english-content hidden">Your information is secure</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-blue-500 mr-2"></i>
+                            <span class="arabic-content">خصوصية تامة</span>
+                            <span class="english-content hidden">Complete privacy</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span class="arabic-content">لا سبام</span>
+                            <span class="english-content hidden">No spam</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Service Selection -->
+            <div class="form-step" id="step2">
+                <div class="text-center mb-12">
+                    <div class="text-6xl mb-4">🎯</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                        <span class="arabic-content">ما نوع الخدمة التي تحتاجها؟</span>
+                        <span class="english-content hidden">What type of service do you need?</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg">
+                        <span class="arabic-content">اختر الخدمة التي تناسب احتياجاتك من مجموعة حلولنا الرقمية</span>
+                        <span class="english-content hidden">Choose the service that fits your needs from our digital solutions</span>
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="service-card p-8 border-2 border-gray-200 rounded-2xl cursor-pointer text-center hover:border-blue-300" data-service="website">
+                        <div class="text-5xl mb-4">🌐</div>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">
+                            <span class="arabic-content">موقع إلكتروني</span>
+                            <span class="english-content hidden">Website</span>
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <span class="arabic-content">مواقع تجارية وشخصية متجاوبة ومحسنة لمحركات البحث</span>
+                            <span class="english-content hidden">Responsive business and personal websites optimized for search engines</span>
+                        </p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <span class="arabic-content">من 5,000 ريال</span>
+                            <span class="english-content hidden">From 5,000 SAR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card p-8 border-2 border-gray-200 rounded-2xl cursor-pointer text-center hover:border-blue-300" data-service="mobile-app">
+                        <div class="text-5xl mb-4">📱</div>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">
+                            <span class="arabic-content">تطبيق جوال</span>
+                            <span class="english-content hidden">Mobile App</span>
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <span class="arabic-content">تطبيقات iOS و Android مخصصة وعالية الأداء</span>
+                            <span class="english-content hidden">Custom high-performance iOS & Android applications</span>
+                        </p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <span class="arabic-content">من 15,000 ريال</span>
+                            <span class="english-content hidden">From 15,000 SAR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card p-8 border-2 border-gray-200 rounded-2xl cursor-pointer text-center hover:border-blue-300" data-service="chatbot">
+                        <div class="text-5xl mb-4">🤖</div>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">
+                            <span class="arabic-content">روبوت محادثة ذكي</span>
+                            <span class="english-content hidden">Smart Chatbot</span>
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <span class="arabic-content">مساعد رقمي مدعوم بالذكاء الاصطناعي ومتعدد اللغات</span>
+                            <span class="english-content hidden">AI-powered multilingual digital assistant</span>
+                        </p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <span class="arabic-content">من 10,000 ريال</span>
+                            <span class="english-content hidden">From 10,000 SAR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card p-8 border-2 border-gray-200 rounded-2xl cursor-pointer text-center hover:border-blue-300" data-service="automation">
+                        <div class="text-5xl mb-4">⚡</div>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">
+                            <span class="arabic-content">أتمتة العمليات</span>
+                            <span class="english-content hidden">Process Automation</span>
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <span class="arabic-content">حلول أتمتة مخصصة لتحسين الكفاءة والإنتاجية</span>
+                            <span class="english-content hidden">Custom automation solutions to improve efficiency and productivity</span>
+                        </p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <span class="arabic-content">من 8,000 ريال</span>
+                            <span class="english-content hidden">From 8,000 SAR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card p-8 border-2 border-gray-200 rounded-2xl cursor-pointer text-center hover:border-blue-300" data-service="ai-solution">
+                        <div class="text-5xl mb-4">🧠</div>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">
+                            <span class="arabic-content">حلول الذكاء الاصطناعي</span>
+                            <span class="english-content hidden">AI Solutions</span>
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <span class="arabic-content">تطبيقات ذكية مخصصة لتحليل البيانات والتنبؤ</span>
+                            <span class="english-content hidden">Custom intelligent applications for data analysis and prediction</span>
+                        </p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <span class="arabic-content">من 20,000 ريال</span>
+                            <span class="english-content hidden">From 20,000 SAR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card p-8 border-2 border-gray-200 rounded-2xl cursor-pointer text-center hover:border-blue-300" data-service="other">
+                        <div class="text-5xl mb-4">💡</div>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">
+                            <span class="arabic-content">خدمات مخصصة</span>
+                            <span class="english-content hidden">Custom Services</span>
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <span class="arabic-content">حلول رقمية مبتكرة مصممة خصيصاً لاحتياجاتك</span>
+                            <span class="english-content hidden">Innovative digital solutions designed specifically for your needs</span>
+                        </p>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <span class="arabic-content">سعر مخصص</span>
+                            <span class="english-content hidden">Custom pricing</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="hidden" name="serviceType" id="serviceType">
+                
+                <div class="mt-8" id="otherServiceInput" style="display: none;">
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">
+                        <span class="arabic-content">يرجى تحديد نوع الخدمة المطلوبة</span>
+                        <span class="english-content hidden">Please specify the required service type</span>
+                    </label>
+                    <input type="text" name="otherService" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="">
+                </div>
+            </div>
+
+            <!-- Step 3: Project Details -->
+            <div class="form-step" id="step3">
+                <div class="text-center mb-12">
+                    <div class="text-6xl mb-4">📋</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                        <span class="arabic-content">أخبرنا عن مشروعك</span>
+                        <span class="english-content hidden">Tell us about your project</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg">
+                        <span class="arabic-content">كلما كانت التفاصيل أكثر، كان بإمكاننا تقديم حل أفضل لك</span>
+                        <span class="english-content hidden">The more details you provide, the better solution we can offer</span>
+                    </p>
+                </div>
+                
+                <div class="space-y-8">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            <i class="fas fa-file-alt mr-2 text-blue-500"></i>
+                            <span class="arabic-content">وصف المشروع بالتفصيل *</span>
+                            <span class="english-content hidden">Detailed Project Description *</span>
+                        </label>
+                        <textarea name="projectDescription" rows="6" required class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none resize-none" placeholder=""></textarea>
+                        <div class="text-xs text-gray-500 mt-2">
+                            <span class="arabic-content">الحد الأدنى 50 حرف</span>
+                            <span class="english-content hidden">Minimum 50 characters</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-4">
+                                <i class="fas fa-bullseye mr-2 text-blue-500"></i>
+                                <span class="arabic-content">الهدف من المشروع</span>
+                                <span class="english-content hidden">Project Goal</span>
+                            </label>
+                            <select name="projectGoal" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none cursor-pointer">
+                                <option value="" class="arabic-content">اختر الهدف</option>
+                                <option value="" class="english-content hidden">Select Goal</option>
+                                <option value="business" class="arabic-content">تجاري - زيادة المبيعات والأرباح</option>
+                                <option value="business" class="english-content hidden">Business - Increase sales and profits</option>
+                                <option value="personal" class="arabic-content">شخصي - موقع أو مدونة شخصية</option>
+                                <option value="personal" class="english-content hidden">Personal - Personal website or blog</option>
+                                <option value="education" class="arabic-content">تعليمي - منصة تعليمية أو تدريبية</option>
+                                <option value="education" class="english-content hidden">Educational - Learning or training platform</option>
+                                <option value="healthcare" class="arabic-content">صحي - خدمات طبية أو صحية</option>
+                                <option value="healthcare" class="english-content hidden">Healthcare - Medical or health services</option>
+                                <option value="nonprofit" class="arabic-content">غير ربحي - مؤسسة خيرية أو اجتماعية</option>
+                                <option value="nonprofit" class="english-content hidden">Non-profit - Charity or social organization</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-4">
+                                <i class="fas fa-users mr-2 text-blue-500"></i>
+                                <span class="arabic-content">الجمهور المستهدف</span>
+                                <span class="english-content hidden">Target Audience</span>
+                            </label>
+                            <input type="text" name="targetAudience" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            <i class="fas fa-money-bill-wave mr-2 text-green-500"></i>
+                            <span class="arabic-content">الميزانية المتوقعة (ريال سعودي)</span>
+                            <span class="english-content hidden">Expected Budget (SAR)</span>
+                        </label>
+                        <select name="budget" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none cursor-pointer">
+                            <option value="" class="arabic-content">حدد الميزانية المناسبة</option>
+                            <option value="" class="english-content hidden">Select appropriate budget</option>
+                            <option value="5000-15000" class="arabic-content">5,000 - 15,000 ريال (مشاريع صغيرة)</option>
+                            <option value="5000-15000" class="english-content hidden">5,000 - 15,000 SAR (Small projects)</option>
+                            <option value="15000-30000" class="arabic-content">15,000 - 30,000 ريال (مشاريع متوسطة)</option>
+                            <option value="15000-30000" class="english-content hidden">15,000 - 30,000 SAR (Medium projects)</option>
+                            <option value="30000-50000" class="arabic-content">30,000 - 50,000 ريال (مشاريع كبيرة)</option>
+                            <option value="30000-50000" class="english-content hidden">30,000 - 50,000 SAR (Large projects)</option>
+                            <option value="50000+" class="arabic-content">أكثر من 50,000 ريال (مشاريع متقدمة)</option>
+                            <option value="50000+" class="english-content hidden">50,000+ SAR (Advanced projects)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Features & Requirements -->
+            <div class="form-step" id="step4">
+                <div class="text-center mb-12">
+                    <div class="text-6xl mb-4">⚙️</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                        <span class="arabic-content">المميزات والمتطلبات التقنية</span>
+                        <span class="english-content hidden">Features & Technical Requirements</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg">
+                        <span class="arabic-content">اختر المميزات التي تحتاجها لجعل مشروعك مميزاً وفعالاً</span>
+                        <span class="english-content hidden">Choose the features you need to make your project unique and effective</span>
+                    </p>
+                </div>
+                
+                <div class="space-y-10">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-puzzle-piece mr-3 text-blue-500"></i>
+                            <span class="arabic-content">المميزات المطلوبة (يمكن اختيار أكثر من واحد)</span>
+                            <span class="english-content hidden">Required Features (Multiple Selection)</span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="features[]" value="user-authentication" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all flex items-center space-x-3 space-x-reverse">
+                                    <i class="fas fa-user-shield text-blue-500"></i>
+                                    <span class="arabic-content">نظام المستخدمين والمصادقة</span>
+                                    <span class="english-content hidden">User Authentication System</span>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="features[]" value="payment-integration" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all flex items-center space-x-3 space-x-reverse">
+                                    <i class="fas fa-credit-card text-green-500"></i>
+                                    <span class="arabic-content">تكامل المدفوعات الإلكترونية</span>
+                                    <span class="english-content hidden">Electronic Payment Integration</span>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="features[]" value="cms" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all flex items-center space-x-3 space-x-reverse">
+                                    <i class="fas fa-edit text-purple-500"></i>
+                                    <span class="arabic-content">نظام إدارة المحتوى</span>
+                                    <span class="english-content hidden">Content Management System</span>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="features[]" value="multilingual" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all flex items-center space-x-3 space-x-reverse">
+                                    <i class="fas fa-globe text-indigo-500"></i>
+                                    <span class="arabic-content">دعم متعدد اللغات (عربي/إنجليزي)</span>
+                                    <span class="english-content hidden">Multilingual Support (Arabic/English)</span>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="features[]" value="analytics" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all flex items-center space-x-3 space-x-reverse">
+                                    <i class="fas fa-chart-bar text-orange-500"></i>
+                                    <span class="arabic-content">تحليلات وتقارير مفصلة</span>
+                                    <span class="english-content hidden">Detailed Analytics & Reports</span>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="features[]" value="api-integration" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all flex items-center space-x-3 space-x-reverse">
+                                    <i class="fas fa-plug text-red-500"></i>
+                                    <span class="arabic-content">تكامل APIs خارجية</span>
+                                    <span class="english-content hidden">External API Integration</span>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="features[]" value="notification-system" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all flex items-center space-x-3 space-x-reverse">
+                                    <i class="fas fa-bell text-yellow-500"></i>
+                                    <span class="arabic-content">نظام الإشعارات المتقدم</span>
+                                    <span class="english-content hidden">Advanced Notification System</span>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="features[]" value="admin-panel" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all flex items-center space-x-3 space-x-reverse">
+                                    <i class="fas fa-cogs text-gray-600"></i>
+                                    <span class="arabic-content">لوحة تحكم إدارية شاملة</span>
+                                    <span class="english-content hidden">Comprehensive Admin Dashboard</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="section-divider"></div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            <i class="fas fa-plus-circle mr-2 text-blue-500"></i>
+                            <span class="arabic-content">مميزات إضافية أو متطلبات خاصة</span>
+                            <span class="english-content hidden">Additional Features or Special Requirements</span>
+                        </label>
+                        <textarea name="additionalFeatures" rows="4" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none resize-none" placeholder=""></textarea>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-laptop-mobile mr-3 text-blue-500"></i>
+                            <span class="arabic-content">المنصات المطلوبة</span>
+                            <span class="english-content hidden">Required Platforms</span>
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="platforms[]" value="web" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all text-center">
+                                    <i class="fas fa-globe text-2xl mb-2 text-blue-500"></i>
+                                    <div class="arabic-content">ويب</div>
+                                    <div class="english-content hidden">Web</div>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="platforms[]" value="ios" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all text-center">
+                                    <i class="fab fa-apple text-2xl mb-2 text-gray-600"></i>
+                                    <div>iOS</div>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="platforms[]" value="android" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all text-center">
+                                    <i class="fab fa-android text-2xl mb-2 text-green-500"></i>
+                                    <div>Android</div>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="platforms[]" value="desktop" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all text-center">
+                                    <i class="fas fa-desktop text-2xl mb-2 text-purple-500"></i>
+                                    <div class="arabic-content">سطح المكتب</div>
+                                    <div class="english-content hidden">Desktop</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Design Preferences -->
+            <div class="form-step" id="step5">
+                <div class="text-center mb-12">
+                    <div class="text-6xl mb-4">🎨</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                        <span class="arabic-content">تفضيلات التصميم والهوية البصرية</span>
+                        <span class="english-content hidden">Design Preferences & Visual Identity</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg">
+                        <span class="arabic-content">ساعدنا في إنشاء تصميم يعكس شخصية مشروعك ويجذب جمهورك</span>
+                        <span class="english-content hidden">Help us create a design that reflects your project's personality and attracts your audience</span>
+                    </p>
+                </div>
+                
+                <div class="space-y-10">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            <i class="fas fa-palette mr-2 text-pink-500"></i>
+                            <span class="arabic-content">نمط التصميم المفضل</span>
+                            <span class="english-content hidden">Preferred Design Style</span>
+                        </label>
+                        <select name="designStyle" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none cursor-pointer">
+                            <option value="" class="arabic-content">اختر النمط الذي يعجبك</option>
+                            <option value="" class="english-content hidden">Select your preferred style</option>
+                            <option value="modern" class="arabic-content">عصري ومينيمال - تصميم نظيف وبسيط</option>
+                            <option value="modern" class="english-content hidden">Modern & Minimal - Clean and simple design</option>
+                            <option value="classic" class="arabic-content">كلاسيكي وأنيق - تصميم تقليدي راقي</option>
+                            <option value="classic" class="english-content hidden">Classic & Elegant - Traditional sophisticated design</option>
+                            <option value="creative" class="arabic-content">إبداعي وجريء - تصميم مبتكر وملفت</option>
+                            <option value="creative" class="english-content hidden">Creative & Bold - Innovative and eye-catching design</option>
+                            <option value="professional" class="arabic-content">مهني ونظيف - تصميم عملي وموثوق</option>
+                            <option value="professional" class="english-content hidden">Professional & Clean - Practical and trustworthy design</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-4">
+                                <i class="fas fa-paint-brush mr-2 text-purple-500"></i>
+                                <span class="arabic-content">الألوان المفضلة</span>
+                                <span class="english-content hidden">Preferred Colors</span>
+                            </label>
+                            <input type="text" name="preferredColors" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-4">
+                                <i class="fas fa-link mr-2 text-blue-500"></i>
+                                <span class="arabic-content">مواقع مرجعية للاستلهام</span>
+                                <span class="english-content hidden">Reference Websites for Inspiration</span>
+                            </label>
+                            <input type="url" name="referenceWebsites" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none" placeholder="https://example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-xl">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-question-circle mr-3 text-blue-500"></i>
+                            <span class="arabic-content">هل لديك هوية بصرية موجودة؟</span>
+                            <span class="english-content hidden">Do you have existing brand identity?</span>
+                        </h3>
+                        <div class="flex flex-col md:flex-row md:space-x-6 md:space-x-reverse space-y-3 md:space-y-0">
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                                <input type="radio" name="existingBrand" value="yes" class="text-blue-600 focus:ring-blue-500 mr-3">
+                                <span class="text-lg arabic-content">نعم، لدي شعار وألوان محددة</span>
+                                <span class="text-lg english-content hidden">Yes, I have logo and specific colors</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                                <input type="radio" name="existingBrand" value="no" class="text-blue-600 focus:ring-blue-500 mr-3">
+                                <span class="text-lg arabic-content">لا، أحتاج تصميم هوية جديدة</span>
+                                <span class="text-lg english-content hidden">No, I need new brand identity design</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            <i class="fas fa-sticky-note mr-2 text-yellow-500"></i>
+                            <span class="arabic-content">ملاحظات إضافية على التصميم</span>
+                            <span class="english-content hidden">Additional Design Notes</span>
+                        </label>
+                        <textarea name="designNotes" rows="4" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none resize-none" placeholder=""></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Timeline & Final Details -->
+            <div class="form-step" id="step6">
+                <div class="text-center mb-12">
+                    <div class="text-6xl mb-4">🎯</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                        <span class="arabic-content">الجدول الزمني وآخر التفاصيل</span>
+                        <span class="english-content hidden">Timeline & Final Details</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg">
+                        <span class="arabic-content">آخر خطوة! أخبرنا عن التوقيت المطلوب وطريقة التواصل المفضلة</span>
+                        <span class="english-content hidden">Final step! Tell us about the required timing and preferred communication method</span>
+                    </p>
+                </div>
+                
+                <div class="space-y-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-4">
+                                <i class="fas fa-calendar-alt mr-2 text-blue-500"></i>
+                                <span class="arabic-content">الموعد المطلوب للتسليم</span>
+                                <span class="english-content hidden">Required Delivery Date</span>
+                            </label>
+                            <input type="date" name="deliveryDate" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-4">
+                                <i class="fas fa-clock mr-2 text-green-500"></i>
+                                <span class="arabic-content">مدى المرونة في الموعد</span>
+                                <span class="english-content hidden">Timeline Flexibility</span>
+                            </label>
+                            <select name="timelineFlexibility" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none cursor-pointer">
+                                <option value="" class="arabic-content">اختر مستوى المرونة</option>
+                                <option value="" class="english-content hidden">Select flexibility level</option>
+                                <option value="strict" class="arabic-content">صارم - لا تأخير مطلقاً</option>
+                                <option value="strict" class="english-content hidden">Strict - No delays whatsoever</option>
+                                <option value="moderate" class="arabic-content">متوسط - أسبوعين إضافيين مقبول</option>
+                                <option value="moderate" class="english-content hidden">Moderate - 2 weeks extra acceptable</option>
+                                <option value="flexible" class="arabic-content">مرن - شهر إضافي مقبول</option>
+                                <option value="flexible" class="english-content hidden">Flexible - 1 month extra acceptable</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-comments mr-3 text-blue-500"></i>
+                            <span class="arabic-content">طرق التواصل المفضلة</span>
+                            <span class="english-content hidden">Preferred Communication Methods</span>
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="communication[]" value="email" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all text-center">
+                                    <i class="fas fa-envelope text-2xl mb-2 text-blue-500"></i>
+                                    <div class="arabic-content">البريد الإلكتروني</div>
+                                    <div class="english-content hidden">Email</div>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="communication[]" value="whatsapp" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all text-center">
+                                    <i class="fab fa-whatsapp text-2xl mb-2 text-green-500"></i>
+                                    <div>WhatsApp</div>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="communication[]" value="phone" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all text-center">
+                                    <i class="fas fa-phone text-2xl mb-2 text-purple-500"></i>
+                                    <div class="arabic-content">المكالمات الهاتفية</div>
+                                    <div class="english-content hidden">Phone Calls</div>
+                                </div>
+                            </label>
+                            
+                            <label class="feature-checkbox flex items-center">
+                                <input type="checkbox" name="communication[]" value="teams" class="sr-only feature-input">
+                                <div class="feature-label w-full p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-all text-center">
+                                    <i class="fas fa-video text-2xl mb-2 text-orange-500"></i>
+                                    <div>Teams/Zoom</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            <i class="fas fa-comment-dots mr-2 text-blue-500"></i>
+                            <span class="arabic-content">ملاحظات أو متطلبات إضافية</span>
+                            <span class="english-content hidden">Additional Notes or Requirements</span>
+                        </label>
+                        <textarea name="additionalNotes" rows="4" class="input-field w-full px-6 py-4 rounded-xl text-lg focus:outline-none resize-none" placeholder=""></textarea>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-50 to-green-50 p-8 rounded-2xl border border-blue-200">
+                        <h3 class="font-bold text-xl text-blue-800 mb-4 flex items-center">
+                            <i class="fas fa-route mr-3"></i>
+                            <span class="arabic-content">الخطوات التالية</span>
+                            <span class="english-content hidden">Next Steps</span>
+                        </h3>
+                        <div class="space-y-3 text-gray-700">
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                <span class="arabic-content">سنقوم بمراجعة طلبك خلال 24 ساعة كحد أقصى</span>
+                                <span class="english-content hidden">We will review your request within 24 hours maximum</span>
+                            </div>
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <i class="fas fa-file-invoice-dollar text-blue-500"></i>
+                                <span class="arabic-content">سنرسل لك عرض سعر مفصل ومخطط زمني دقيق</span>
+                                <span class="english-content hidden">We will send you a detailed quote and precise timeline</span>
+                            </div>
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <i class="fas fa-calendar-check text-purple-500"></i>
+                                <span class="arabic-content">سنحدد موعد لمناقشة كافة التفاصيل معك</span>
+                                <span class="english-content hidden">We will schedule a meeting to discuss all details with you</span>
+                            </div>
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <i class="fas fa-rocket text-orange-500"></i>
+                                <span class="arabic-content">بداية العمل فوراً بعد الموافقة على العرض</span>
+                                <span class="english-content hidden">Work begins immediately after quote approval</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center mt-12 pt-8 border-t-2 border-gray-100">
+                <button type="button" id="prevBtn" class="px-6 md:px-8 py-3 md:py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 hidden flex items-center space-x-2 space-x-reverse">
+                    <i class="fas fa-arrow-right"></i>
+                    <span class="arabic-content">السابق</span>
+                    <span class="english-content hidden">Previous</span>
+                </button>
+                
+                <button type="button" id="nextBtn" class="btn-primary px-6 md:px-8 py-3 md:py-4 text-white rounded-xl transition-all duration-300 flex items-center space-x-2 space-x-reverse ml-auto">
+                    <span class="arabic-content">التالي</span>
+                    <span class="english-content hidden">Next</span>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                
+                <button type="submit" id="submitBtn" class="btn-success px-8 md:px-10 py-3 md:py-4 text-white rounded-xl transition-all duration-300 hidden flex items-center space-x-3 space-x-reverse ml-auto">
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="arabic-content">إرسال الطلب</span>
+                    <span class="english-content hidden">Submit Request</span>
+                    <div id="submitSpinner" class="loading-spinner hidden ml-3"></div>
+                </button>
+            </div>
+        </form>
+        
+        <!-- Auto-save indicator -->
+        <div class="text-center mt-4 text-sm text-gray-500">
+            <i class="fas fa-save mr-2"></i>
+            <span class="arabic-content">يتم حفظ تقدمك تلقائياً</span>
+            <span class="english-content hidden">Your progress is saved automatically</span>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 md:p-12 rounded-2xl max-w-lg mx-4 text-center shadow-2xl transform scale-95 transition-transform">
+            <div class="text-8xl mb-6 animate-bounce">🎉</div>
+            <h3 class="text-2xl md:text-3xl font-bold text-green-600 mb-4">
+                <span class="arabic-content">تم إرسال طلبك بنجاح!</span>
+                <span class="english-content hidden">Request Submitted Successfully!</span>
+            </h3>
+            <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                <span class="arabic-content">شكراً لك! سنتواصل معك خلال 24 ساعة لبدء مشروعك الرقمي معنا</span>
+                <span class="english-content hidden">Thank you! We'll contact you within 24 hours to start your digital project with us</span>
+            </p>
+            <div class="space-y-4">
+                <button onclick="location.reload()" class="btn-primary px-8 py-3 text-white rounded-xl transition-all duration-300 w-full">
+                    <span class="arabic-content">طلب جديد</span>
+                    <span class="english-content hidden">New Request</span>
+                </button>
+                <div class="flex justify-center space-x-4 mt-6">
+                    <a href="https://x.com/brainsait369" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">
+                        <i class="fab fa-x-twitter text-2xl"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/fadil369" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+                    <a href="https://github.com/fadil369" target="_blank" class="text-gray-400 hover:text-gray-700 transition-colors">
+                        <i class="fab fa-github text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize EmailJS with your Public Key
+        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS Public Key
+
+        let currentStep = 1;
+        const totalSteps = 6;
+        let isArabic = true;
+
+        // Language Toggle
+        document.getElementById('langToggle').addEventListener('click', function() {
+            isArabic = !isArabic;
+            toggleLanguage();
+        });
+
+        function toggleLanguage() {
+            const arabicElements = document.querySelectorAll('.arabic-content');
+            const englishElements = document.querySelectorAll('.english-content');
+            const body = document.body;
+            const html = document.documentElement;
+            
+            if (isArabic) {
+                arabicElements.forEach(el => el.classList.remove('hidden'));
+                englishElements.forEach(el => el.classList.add('hidden'));
+                body.classList.add('font-arabic');
+                body.classList.remove('font-english');
+                html.setAttribute('lang', 'ar');
+                html.setAttribute('dir', 'rtl');
+                document.getElementById('langText').textContent = 'English';
+                
+                // Update placeholders
+                updatePlaceholders('ar');
+            } else {
+                arabicElements.forEach(el => el.classList.add('hidden'));
+                englishElements.forEach(el => el.classList.remove('hidden'));
+                body.classList.remove('font-arabic');
+                body.classList.add('font-english');
+                html.setAttribute('lang', 'en');
+                html.setAttribute('dir', 'ltr');
+                document.getElementById('langText').textContent = 'العربية';
+                
+                // Update placeholders
+                updatePlaceholders('en');
+            }
+        }
+
+        function updatePlaceholders(lang) {
+            const placeholders = {
+                ar: {
+                    fullName: 'د. محمد أحمد السعيد',
+                    email: 'mohammed@company.com',
+                    phone: '+966501234567',
+                    location: 'الرياض، المملكة العربية السعودية',
+                    company: 'شركة النجاح للتقنية المحدودة',
+                    projectDescription: 'أريد إنشاء موقع إلكتروني متطور لشركتي يتضمن عرض الخدمات، نظام حجز المواعيد، ومتجر إلكتروني للمنتجات...',
+                    targetAudience: 'العملاء والشركات في المملكة العربية السعودية من عمر 25-50',
+                    preferredColors: 'الأزرق الملكي، الأبيض، الذهبي',
+                    additionalFeatures: 'أحتاج تكامل مع أنظمة CRM، وتقارير تحليلية مفصلة، ودعم تقني 24/7',
+                    designNotes: 'أفضل التصميم العصري مع لمسة من التراث العربي، ويجب أن يكون سهل الاستخدام لكبار السن',
+                    additionalNotes: 'أهتم بالسرعة والأمان، وأريد ضمان لمدة سنة كاملة مع الدعم التقني'
+                },
+                en: {
+                    fullName: 'Dr. Mohammed Ahmed Al-Saeed',
+                    email: 'mohammed@company.com',
+                    phone: '+966501234567',
+                    location: 'Riyadh, Kingdom of Saudi Arabia',
+                    company: 'Success Technology Company Ltd',
+                    projectDescription: 'I want to create an advanced website for my company that includes service display, appointment booking system, and e-commerce store for products...',
+                    targetAudience: 'Clients and companies in Saudi Arabia aged 25-50',
+                    preferredColors: 'Royal Blue, White, Gold',
+                    additionalFeatures: 'I need CRM integration, detailed analytics reports, and 24/7 technical support',
+                    designNotes: 'I prefer modern design with a touch of Arabic heritage, and it should be user-friendly for elderly users',
+                    additionalNotes: 'I care about speed and security, and I want a full year warranty with technical support'
+                }
+            };
+
+            const fields = document.querySelectorAll('input, textarea');
+            fields.forEach(field => {
+                const name = field.getAttribute('name');
+                if (placeholders[lang][name]) {
+                    field.placeholder = placeholders[lang][name];
+                }
+            });
+        }
+
+        // Form Step Navigation
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(el => {
+                el.classList.remove('active');
+                el.style.display = 'none';
+            });
+            
+            // Show current step
+            const currentStepEl = document.getElementById(`step${step}`);
+            currentStepEl.style.display = 'block';
+            setTimeout(() => currentStepEl.classList.add('active'), 10);
+            
+            // Update progress
+            const progress = (step / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+            document.getElementById('currentStep').textContent = step;
+            document.getElementById('currentStepEn').textContent = step;
+            
+            // Update step indicators
+            for (let i = 1; i <= totalSteps; i++) {
+                const indicator = document.getElementById(`stepIndicator${i}`);
+                if (i < step) {
+                    indicator.className = 'step-indicator completed';
+                    indicator.innerHTML = '<i class="fas fa-check"></i>';
+                } else if (i === step) {
+                    indicator.className = 'step-indicator active pulse';
+                    indicator.textContent = i;
+                } else {
+                    indicator.className = 'step-indicator';
+                    indicator.textContent = i;
+                }
+            }
+            
+            // Update buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (step === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if (step === totalSteps) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Auto-save
+            autoSave();
+        }
+
+        // Service Selection
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove previous selection
+                document.querySelectorAll('.service-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add selection to clicked card
+                this.classList.add('selected');
+                
+                // Set hidden input value
+                const serviceType = this.getAttribute('data-service');
+                document.getElementById('serviceType').value = serviceType;
+                
+                // Show/hide other service input
+                const otherInput = document.getElementById('otherServiceInput');
+                if (serviceType === 'other') {
+                    otherInput.style.display = 'block';
+                } else {
+                    otherInput.style.display = 'none';
+                    document.querySelector('input[name="otherService"]').value = '';
+                }
+            });
+        });
+
+        // Feature checkbox styling
+        document.querySelectorAll('.feature-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                const input = this.querySelector('.feature-input');
+                const label = this.querySelector('.feature-label');
+                
+                input.checked = !input.checked;
+                
+                if (input.checked) {
+                    label.classList.add('border-blue-500', 'bg-blue-50');
+                } else {
+                    label.classList.remove('border-blue-500', 'bg-blue-50');
+                }
+            });
+        });
+
+        // Form Validation
+        function validateStep(step) {
+            const currentStepElement = document.getElementById(`step${step}`);
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('border-red-500', 'shake');
+                    setTimeout(() => field.classList.remove('shake'), 500);
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+            
+            // Special validation for step 2 (service selection)
+            if (step === 2) {
+                const serviceType = document.getElementById('serviceType').value;
+                if (!serviceType) {
+                    showNotification(
+                        isArabic ? 'يرجى اختيار نوع الخدمة المطلوبة' : 'Please select a service type',
+                        'error'
+                    );
+                    isValid = false;
+                }
+                
+                // If other service selected, validate the input
+                if (serviceType === 'other') {
+                    const otherService = document.querySelector('input[name="otherService"]').value;
+                    if (!otherService.trim()) {
+                        showNotification(
+                            isArabic ? 'يرجى تحديد نوع الخدمة المخصصة' : 'Please specify the custom service type',
+                            'error'
+                        );
+                        document.querySelector('input[name="otherService"]').classList.add('border-red-500', 'shake');
+                        setTimeout(() => document.querySelector('input[name="otherService"]').classList.remove('shake'), 500);
+                        isValid = false;
+                    }
+                }
+            }
+            
+            // Project description validation (minimum length)
+            if (step === 3) {
+                const description = document.querySelector('textarea[name="projectDescription"]').value;
+                if (description.length < 50) {
+                    showNotification(
+                        isArabic ? 'يرجى كتابة وصف أكثر تفصيلاً (50 حرف على الأقل)' : 'Please write a more detailed description (at least 50 characters)',
+                        'error'
+                    );
+                    isValid = false;
+                }
+            }
+            
+            if (!isValid) {
+                showNotification(
+                    isArabic ? 'يرجى تعبئة جميع الحقول المطلوبة' : 'Please fill all required fields',
+                    'error'
+                );
+            }
+            
+            return isValid;
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-lg shadow-lg transition-all duration-300 ${
+                type === 'error' ? 'bg-red-500 text-white' : 
+                type === 'success' ? 'bg-green-500 text-white' : 
+                'bg-blue-500 text-white'
+            }`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${type === 'error' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle'} mr-3"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Navigation Event Listeners
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            if (validateStep(currentStep)) {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+        // Auto-save to localStorage
+        function autoSave() {
+            const formData = new FormData(document.getElementById('preOrderForm'));
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+            data.currentStep = currentStep;
+            localStorage.setItem('brainsait_form_data', JSON.stringify(data));
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            const savedData = localStorage.getItem('brainsait_form_data');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                Object.keys(data).forEach(key => {
+                    if (key === 'currentStep') {
+                        currentStep = data[key];
+                        showStep(currentStep);
+                    } else {
+                        const field = document.querySelector(`[name="${key}"]`);
+                        if (field) {
+                            if (field.type === 'checkbox' || field.type === 'radio') {
+                                const fields = document.querySelectorAll(`[name="${key}"]`);
+                                fields.forEach(f => {
+                                    if (Array.isArray(data[key])) {
+                                        f.checked = data[key].includes(f.value);
+                                    } else {
+                                        f.checked = f.value === data[key];
+                                    }
+                                });
+                            } else {
+                                field.value = data[key];
+                            }
+                        }
+                    }
+                });
+                
+                // Update service card selection
+                const serviceType = data.serviceType;
+                if (serviceType) {
+                    const serviceCard = document.querySelector(`[data-service="${serviceType}"]`);
+                    if (serviceCard) {
+                        serviceCard.click();
+                    }
+                }
+            }
+        }
+
+        // Auto-save on input change
+        document.getElementById('preOrderForm').addEventListener('input', autoSave);
+        document.getElementById('preOrderForm').addEventListener('change', autoSave);
+
+        // Form Submission with EmailJS
+        document.getElementById('preOrderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateStep(currentStep)) {
+                return;
+            }
+
+            // Show loading spinner
+            const submitBtn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('submitSpinner');
+            submitBtn.disabled = true;
+            spinner.classList.remove('hidden');
+
+            // Collect all form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Process regular fields
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Process checkboxes properly
+            const checkboxGroups = ['features[]', 'platforms[]', 'communication[]'];
+            checkboxGroups.forEach(group => {
+                const cleanKey = group.replace('[]', '');
+                data[cleanKey] = formData.getAll(group);
+            });
+
+            // Format data for email template
+            const emailData = {
+                service_id: 'YOUR_SERVICE_ID',      // Replace with your EmailJS Service ID
+                template_id: 'YOUR_TEMPLATE_ID',    // Replace with your EmailJS Template ID
+                user_id: 'YOUR_PUBLIC_KEY',         // Replace with your EmailJS Public Key
+                template_params: {
+                    // Recipient
+                    to_email: 'brainsait@hotmail.com',
+                    reply_to: data.email || 'noreply@brainsait.com',
+                    
+                    // Basic Information
+                    from_name: data.fullName || 'غير محدد',
+                    from_email: data.email || 'غير محدد',
+                    phone: data.phone || 'غير محدد',
+                    company: data.company || 'مشروع شخصي',
+                    location: data.location || 'غير محدد',
+                    
+                    // Service Details
+                    service_type: data.serviceType || 'غير محدد',
+                    other_service: data.otherService || 'لا ينطبق',
+                    
+                    // Project Details
+                    project_description: data.projectDescription || 'غير محدد',
+                    project_goal: data.projectGoal || 'غير محدد',
+                    target_audience: data.targetAudience || 'غير محدد',
+                    budget: data.budget || 'غير محدد',
+                    
+                    // Features & Requirements
+                    features: Array.isArray(data.features) ? data.features.join('، ') : 'لا توجد',
+                    additional_features: data.additionalFeatures || 'لا توجد',
+                    platforms: Array.isArray(data.platforms) ? data.platforms.join('، ') : 'غير محدد',
+                    
+                    // Design Preferences
+                    design_style: data.designStyle || 'غير محدد',
+                    preferred_colors: data.preferredColors || 'غير محدد',
+                    reference_websites: data.referenceWebsites || 'لا توجد',
+                    existing_brand: data.existingBrand || 'غير محدد',
+                    design_notes: data.designNotes || 'لا توجد',
+                    
+                    // Timeline & Communication
+                    delivery_date: data.deliveryDate || 'غير محدد',
+                    timeline_flexibility: data.timelineFlexibility || 'غير محدد',
+                    communication_methods: Array.isArray(data.communication) ? data.communication.join('، ') : 'غير محدد',
+                    additional_notes: data.additionalNotes || 'لا توجد',
+                    
+                    // Metadata
+                    submission_date: new Date().toLocaleString('ar-SA'),
+                    language: isArabic ? 'العربية' : 'English',
+                    form_version: '2.0'
+                }
+            };
+
+            // Send email using EmailJS
+            emailjs.send(
+                emailData.service_id,
+                emailData.template_id,
+                emailData.template_params
+            ).then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+                
+                // Hide loading spinner
+                submitBtn.disabled = false;
+                spinner.classList.add('hidden');
+                
+                // Clear saved data
+                localStorage.removeItem('brainsait_form_data');
+                
+                // Show success message
+                const successModal = document.getElementById('successMessage');
+                successModal.classList.remove('hidden');
+                successModal.querySelector('div').classList.add('scale-100');
+                
+                // Track success (optional)
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_submit', {
+                        'event_category': 'engagement',
+                        'event_label': 'pre_order_form'
+                    });
+                }
+                
+            }, function(error) {
+                console.error('FAILED...', error);
+                
+                // Hide loading spinner
+                submitBtn.disabled = false;
+                spinner.classList.add('hidden');
+                
+                // Show error notification
+                showNotification(
+                    isArabic ? 'حدث خطأ في الإرسال. سيتم فتح البريد الإلكتروني لإرسال الطلب يدوياً.' : 'An error occurred while sending. Email client will open to send manually.',
+                    'error'
+                );
+
+                // Fallback: Open email client with pre-filled data
+                const subject = encodeURIComponent('BrainSAIT Pre-Order Request - ' + (data.fullName || 'New Client'));
+                const body = encodeURIComponent(`
+طلب جديد من موقع BrainSAIT
+
+=== معلومات العميل ===
+الاسم: ${data.fullName || 'غير محدد'}
+البريد الإلكتروني: ${data.email || 'غير محدد'}
+الهاتف: ${data.phone || 'غير محدد'}
+الشركة: ${data.company || 'مشروع شخصي'}
+الموقع: ${data.location || 'غير محدد'}
+
+=== تفاصيل الخدمة ===
+نوع الخدمة: ${data.serviceType || 'غير محدد'}
+${data.serviceType === 'other' ? `خدمة مخصصة: ${data.otherService}` : ''}
+
+=== تفاصيل المشروع ===
+وصف المشروع: 
+${data.projectDescription || 'غير محدد'}
+
+الهدف: ${data.projectGoal || 'غير محدد'}
+الجمهور المستهدف: ${data.targetAudience || 'غير محدد'}
+الميزانية: ${data.budget || 'غير محدد'}
+
+=== المميزات المطلوبة ===
+${Array.isArray(data.features) ? data.features.join('\n- ') : 'لا توجد'}
+
+مميزات إضافية:
+${data.additionalFeatures || 'لا توجد'}
+
+المنصات: ${Array.isArray(data.platforms) ? data.platforms.join(', ') : 'غير محدد'}
+
+=== التصميم ===
+نمط التصميم: ${data.designStyle || 'غير محدد'}
+الألوان المفضلة: ${data.preferredColors || 'غير محدد'}
+مواقع مرجعية: ${data.referenceWebsites || 'لا توجد'}
+هوية بصرية موجودة: ${data.existingBrand || 'غير محدد'}
+
+=== الجدول الزمني ===
+موعد التسليم: ${data.deliveryDate || 'غير محدد'}
+المرونة: ${data.timelineFlexibility || 'غير محدد'}
+طرق التواصل: ${Array.isArray(data.communication) ? data.communication.join(', ') : 'غير محدد'}
+
+=== ملاحظات إضافية ===
+${data.additionalNotes || 'لا توجد'}
+
+تاريخ الإرسال: ${new Date().toLocaleString('ar-SA')}
+اللغة: ${isArabic ? 'العربية' : 'English'}
+                `);
+                
+                // Open email client
+                window.open(`mailto:brainsait@hotmail.com?subject=${subject}&body=${body}`);
+            });
+        });
+
+        // Initialize
+        showStep(1);
+        toggleLanguage();
+        loadSavedData();
+
+        // Set minimum date for delivery date input (today)
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[name="deliveryDate"]').setAttribute('min', today);
+    </script>
+
+    <!-- EmailJS Setup Guide -->
+    <script>
+        console.log(`
+        📧 EmailJS Setup Instructions for BrainSAIT Form:
+        
+        1. Go to https://www.emailjs.com/ and create a free account
+        
+        2. Create Email Service:
+           - Dashboard > Email Services > Add New Service
+           - Choose your email provider (Gmail, Outlook, etc.)
+           - For Outlook/Hotmail: Select "Outlook" service
+           - Connect your brainsait@hotmail.com account
+           - Note your Service ID
+        
+        3. Create Email Template:
+           - Dashboard > Email Templates > Create New Template
+           - Set up your template:
+           
+           To Email: {{to_email}}
+           Reply To: {{reply_to}}
+           Subject: BrainSAIT طلب جديد - {{from_name}}
+           
+           Content:
+           ====================================
+           طلب مشروع جديد من موقع BrainSAIT
+           ====================================
+           
+           📅 تاريخ الإرسال: {{submission_date}}
+           🌐 اللغة: {{language}}
+           
+           👤 معلومات العميل
+           ==================
+           الاسم: {{from_name}}
+           البريد الإلكتروني: {{from_email}}
+           الهاتف: {{phone}}
+           الشركة/المؤسسة: {{company}}
+           المدينة/البلد: {{location}}
+           
+           🎯 تفاصيل الخدمة المطلوبة
+           =========================
+           نوع الخدمة: {{service_type}}
+           خدمة مخصصة: {{other_service}}
+           
+           📋 وصف المشروع
+           ===============
+           {{project_description}}
+           
+           الهدف من المشروع: {{project_goal}}
+           الجمهور المستهدف: {{target_audience}}
+           الميزانية المتوقعة: {{budget}}
+           
+           ⚙️ المميزات والمتطلبات
+           ======================
+           المميزات المطلوبة: {{features}}
+           مميزات إضافية: {{additional_features}}
+           المنصات: {{platforms}}
+           
+           🎨 تفضيلات التصميم
+           ==================
+           نمط التصميم: {{design_style}}
+           الألوان المفضلة: {{preferred_colors}}
+           مواقع مرجعية: {{reference_websites}}
+           هوية بصرية موجودة: {{existing_brand}}
+           ملاحظات التصميم: {{design_notes}}
+           
+           📅 الجدول الزمني والتواصل
+           =========================
+           موعد التسليم المطلوب: {{delivery_date}}
+           مرونة الجدول الزمني: {{timeline_flexibility}}
+           طرق التواصل المفضلة: {{communication_methods}}
+           
+           💬 ملاحظات إضافية
+           ==================
+           {{additional_notes}}
+           
+           ====================================
+           BrainSAIT - حلول رقمية مبتكرة
+           https://brainsait.com
+           ====================================
+        
+        4. Get Your Credentials:
+           - Public Key: Account > API Keys
+           - Service ID: From your email service
+           - Template ID: From your template
+        
+        5. Update the code:
+           - Replace YOUR_PUBLIC_KEY (line 926)
+           - Replace YOUR_SERVICE_ID (line 1419)
+           - Replace YOUR_TEMPLATE_ID (line 1420)
+        
+        6. Test the form!
+        
+        Note: Free EmailJS account allows 200 emails/month
+        `);
+    </script>
+</body>
+</html>
