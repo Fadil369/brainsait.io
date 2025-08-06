@@ -1,0 +1,74 @@
+{
+    "nav": {
+        "home": "Home",
+        "expertise": "Expertise",
+        "solutions": "Solutions",
+        "contact": "Contact",
+        "signin": "Sign In",
+        "language": "العربية"
+    },
+    "hero": {
+        "title": "Revolutionizing Healthcare Through AI",
+        "subtitle": "Bridging complex technical concepts with real-world healthcare solutions",
+        "cta_primary": "Explore Solutions",
+        "cta_secondary": "Get Consultation"
+    },
+    "products": {
+        "title": "Our Solutions",
+        "subtitle": "Cutting-edge healthcare AI tools designed for the Saudi Arabian market",
+        "fhir": {
+            "name": "FHIR Context Engine",
+            "description": "Advanced FHIR implementation with context-aware data processing",
+            "price": "1,499 SAR",
+            "features": [
+                "Complete FHIR R4 Implementation",
+                "Context-Aware Data Processing",
+                "Real-time Validation & Mapping",
+                "Saudi Healthcare Standards Compliance"
+            ]
+        },
+        "nphies": {
+            "name": "NPHIES Integration Suite",
+            "description": "Complete NPHIES integration with automated claims processing",
+            "price": "2,499 SAR",
+            "features": [
+                "Full NPHIES API Integration",
+                "Automated Claims Processing",
+                "Real-time Eligibility Verification",
+                "Saudi Insurance Standards"
+            ]
+        },
+        "cta": "Purchase Now"
+    },
+    "payment": {
+        "title": "Complete Your Purchase",
+        "subtitle": "Secure payment processing with Saudi Riyal support",
+        "methods": {
+            "paypal": "PayPal",
+            "stripe": "Credit Card"
+        },
+        "button": "Pay Now",
+        "processing": "Processing...",
+        "success": "Payment successful!",
+        "error": "Payment failed. Please try again."
+    },
+    "footer": {
+        "company": "BrainSAIT",
+        "description": "Revolutionary Healthcare AI Solutions",
+        "links": {
+            "about": "About Dr. Fadil",
+            "privacy": "Privacy Policy",
+            "terms": "Terms of Service",
+            "contact": "Contact Us"
+        },
+        "copyright": "© 2024 BrainSAIT. All rights reserved."
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "retry": "Retry",
+        "close": "Close",
+        "submit": "Submit",
+        "cancel": "Cancel"
+    }
+}
