@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Disallow common crawlers from accessing admin areas
+Disallow: /admin/
+Disallow: /.env
+Disallow: /api/
+
+# Allow indexing of all public content
+Allow: /src/
+Allow: /assets/
+
+Sitemap: https://brainsait.io/sitemap.xml

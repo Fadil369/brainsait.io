@@ -1,0 +1,32 @@
+{
+    "name": "brainsait-website",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "test": "vitest",
+        "test:e2e": "playwright test",
+        "lint": "eslint src/**/*.js",
+        "format": "prettier --write .",
+        "docker:build": "docker build -f docker/Dockerfile -t brainsait-website .",
+        "docker:run": "docker run -p 8080:80 brainsait-website",
+        "deploy": "npm run build && wrangler pages publish dist"
+    },
+    "dependencies": {
+        "axios": "^1.6.0"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.41.0",
+        "autoprefixer": "^10.4.0",
+        "eslint": "^8.56.0",
+        "jsdom": "^24.1.3",
+        "postcss": "^8.4.0",
+        "prettier": "^3.2.0",
+        "tailwindcss": "^3.4.0",
+        "vite": "^5.0.0",
+        "vitest": "^1.2.0",
+        "wrangler": "^3.22.0"
+    }
+}
